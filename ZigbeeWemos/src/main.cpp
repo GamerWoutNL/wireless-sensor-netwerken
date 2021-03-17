@@ -1,22 +1,23 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-#include "DHT.h"
+#include <XBee.h>
 
-#define DHTPIN 5
-#define DHTTYPE DHT11
+#define LED_DATA D7
 
 WiFiClient client;
 PubSubClient mqtt;
-DHT dht(DHTPIN, DHTTYPE);
 
 const char* wifi_ssid = "FRITZ!Box Fon WLAN 7360";
 const char* wifi_password = "StevensLegstraat";
 const char* mqtt_server = "test.mosquitto.org";
 const int mqtt_port = 1883;
-const char* mqtt_topic = "smartmeter/raw";
+const char* mqtt_topic = "smartmeter-wout";
 
-unsigned long lastMsg = 0;
+XBee xbee = XBee();
+XBeeResponse response = XBeeResponse();
+ZBRxResponse rx = ZBRxResponse();
+ModemStatusResponse msr = ModemStatusResponse();
 
 void connectWifi() {
   delay(10);
@@ -55,29 +56,71 @@ void connectMQTT() {
   }
 }
 
+void flashLed(int pin, int times, int wait) {
+    
+    for (int i = 0; i < times; i++) {
+      digitalWrite(pin, HIGH);
+      delay(wait);
+      digitalWrite(pin, LOW);
+      
+      if (i + 1 < times) {
+        delay(wait);
+      }
+    }
+}
+
 void setup() {
+  pinMode(LED_DATA, OUTPUT);
+
   Serial.begin(9600);
-  dht.begin();
-  connectWifi();
-  connectMQTT();
+  xbee.begin(Serial);
+  
+  flashLed(LED_DATA, 3, 50);
+
+  //connectWifi();
+  //connectMQTT();
 }
 
 void loop() {
-  mqtt.loop();
+  //mqtt.loop();
 
-  unsigned long now = millis();
-  if (now - lastMsg > 2000) {
-    lastMsg = now;
-
-    float humidity = dht.readHumidity();
-    float temperature = dht.readTemperature();
-
-    if (isnan(humidity) || isnan(temperature)) {
-      return;
-    }
-
-    Serial.print(String((int)temperature) + ":" + String((int)humidity));
+  xbee.readPacket();
+    
+  if (xbee.getResponse().isAvailable()) {
+    flashLed(LED_DATA, 1, 1000);
+    
+    // if (xbee.getResponse().getApiId() == ZB_RX_RESPONSE) {
+    //   // got a zb rx packet
+      
+    //   // now fill our zb rx class
+    //   xbee.getResponse().getZBRxResponse(rx);
+          
+    //   if (rx.getOption() == ZB_PACKET_ACKNOWLEDGED) {
+    //       // the sender got an ACK
+    //       flashLed(LED_BUILTIN, 10, 10);
+    //   } else {
+    //       // we got it (obviously) but sender didn't get an ACK
+    //       flashLed(LED_BUILTIN, 2, 20);
+    //   }
+    //   // set dataLed PWM to value of the first byte in the data
+    //   flashLed(LED_DATA, 1, 500);
+    // } else if (xbee.getResponse().getApiId() == MODEM_STATUS_RESPONSE) {
+    //   xbee.getResponse().getModemStatusResponse(msr);
+    //   // the local XBee sends this response on certain events, like association/dissociation
+      
+    //   if (msr.getStatus() == ASSOCIATED) {
+    //     // yay this is great.  flash led
+    //     flashLed(LED_BUILTIN, 10, 10);
+    //   } else if (msr.getStatus() == DISASSOCIATED) {
+    //     // this is awful.. flash led to show our discontent
+    //     flashLed(LED_BUILTIN, 10, 10);
+    //   } else {
+    //     // another status
+    //     flashLed(LED_BUILTIN, 5, 10);
+    //   }
+    // } else {
+    //   // not something we were expecting
+    //   flashLed(LED_BUILTIN, 1, 25);    
+    // }
   }
-  
-  
 }

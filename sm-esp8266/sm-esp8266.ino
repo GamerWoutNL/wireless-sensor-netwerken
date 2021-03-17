@@ -238,7 +238,7 @@ Version :      DMK, Initial code
   // Setup unique mqtt id and mqtt topic string
   create_unique_mqtt_topic_string(app_config.mqtt_topic);
   create_unigue_mqtt_id(app_config.mqtt_id);
-  sprintf(mqtt_topic,"smartmeter/raw");
+  sprintf(mqtt_topic,"smartmeter-wout");
 
   // Perform factory reset switches
   // is pressed during powerup
@@ -379,7 +379,6 @@ notes:
 Version :      DMK, Initial code
 *******************************************************************/
 {
-
   // Check for IP connection 
   if( WiFi.status() == WL_CONNECTED) {
 
@@ -896,20 +895,9 @@ void mqtt_heartbeat(void){
     DynamicJsonDocument doc(2048);
     JsonObject root = doc.to<JsonObject>();
     
-    JsonObject datagram = root.createNestedObject("datagram");
-    datagram["p1"] = p1_buf;
-
-    datagram["signature"] = app_config.mqtt_id;
-
-    JsonObject s0 = datagram.createNestedObject("s0");
-    s0["unit"] = "W";
-    s0["label"] = "e-car charger";
-    s0["value"] = 0;
-    
-    JsonObject s1 = datagram.createNestedObject("s1");
-    s1["unit"] = "W";
-    s1["label"] = "solar panels";
-    s1["value"] = 0;
+    JsonObject smartmeter = root.createNestedObject("smartmeter");
+    smartmeter["id"] = app_config.mqtt_id;
+    smartmeter["data"] = p1_buf;
     
     String payload = "";
     serializeJson(doc, payload);
