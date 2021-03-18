@@ -3,6 +3,7 @@
 #include <XBee.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include <ArduinoJson.h>
 
 #define LED_GREEN 18
 #define LED_RED 19
@@ -87,17 +88,18 @@ void loop() {
       int temperature = response.getData(0);
       int humidity = response.getData(1);
 
-      Serial.print("Temperature: ");
-      Serial.print(temperature);
-      Serial.println(" C");
+      DynamicJsonDocument doc(2048);
+      
+      JsonObject root = doc.to<JsonObject>();
+      root["sensor"] = "DHT11";
 
-      Serial.print("Humidity: ");
-      Serial.print(humidity);
-      Serial.println(" %");
+      JsonObject data = root.createNestedObject("data");
+      data["temperature"] = temperature;
+      data["humidity"] = humidity;
 
-      Serial.println();
-
-      publishMQTT(String(temperature));
+      String payload = "";
+      serializeJson(doc, payload);
+      publishMQTT(payload.c_str());
 
       flashLed(LED_GREEN, 1, 1000);
     } else {

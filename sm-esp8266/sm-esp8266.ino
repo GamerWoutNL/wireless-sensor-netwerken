@@ -893,11 +893,13 @@ void mqtt_heartbeat(void){
   
     // Construct json object and publish
     DynamicJsonDocument doc(2048);
+	
     JsonObject root = doc.to<JsonObject>();
+	  root["sensor"] = "smartmeter";
     
-    JsonObject smartmeter = root.createNestedObject("smartmeter");
-    smartmeter["id"] = app_config.mqtt_id;
-    smartmeter["data"] = p1_buf;
+    JsonObject data = root.createNestedObject("data");
+    data["id"] = app_config.mqtt_id;
+    data["p1"] = p1_buf;
     
     String payload = "";
     serializeJson(doc, payload);

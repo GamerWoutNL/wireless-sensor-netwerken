@@ -57,8 +57,6 @@ void send(uint8_t payload[], int length) {
   Serial.write(checksum); //checksum
 
   flashLed(LED_GREEN, 1, 1000);
-
-  delay(1000);
 }
 
 void setup() {
@@ -81,5 +79,5 @@ void loop() {
   payload[1] = (int)humidity;
   send(payload, sizeof(payload) / sizeof(payload[0]));
 
-  delay(1000);
+  delay(10000);
 }
