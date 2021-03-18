@@ -3,23 +3,21 @@ package nl.iwsn.backend.services;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class EmbeddedMessagingService implements MqttCallbackExtended {
 
+    private static final String host = "tcp://test.mosquitto.org:1883";
+    private static final String topic = "smartmeter-wout";
+
     private IMqttClient client;
-    private String topic;
 
     public EmbeddedMessagingService () {
-        this.topic = "smartmeter-wout";
-
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
 
         try {
-            this.client = new MqttClient("tcp://test.mosquitto.org:1883", "client-1");
+            this.client = new MqttClient(host, "client-1");
             this.client.setCallback(this);
             this.client.connect(options);
         } catch (MqttException e) {
@@ -46,7 +44,7 @@ public class EmbeddedMessagingService implements MqttCallbackExtended {
     @Override
     public void connectComplete(boolean b, String s) {
         try {
-            this.client.subscribe(this.topic, 0);
+            this.client.subscribe(topic, 0);
         } catch (MqttException e) {
             e.printStackTrace();
         }
