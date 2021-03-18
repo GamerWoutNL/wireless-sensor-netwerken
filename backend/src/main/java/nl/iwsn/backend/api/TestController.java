@@ -18,7 +18,7 @@ public class TestController {
 
     @GetMapping("{message}")
     public String get(@PathVariable String message) {
-        this.messagingService.publish("wout-test", message);
+        this.messagingService.publish(message);
 
         return "test";
     }

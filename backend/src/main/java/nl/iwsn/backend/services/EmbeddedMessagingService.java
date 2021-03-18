@@ -6,30 +6,28 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class EmbeddedMessagingService {
+public class EmbeddedMessagingService implements MqttCallbackExtended {
 
     private IMqttClient client;
+    private String topic;
 
     public EmbeddedMessagingService () {
-        try {
-            this.client = new MqttClient("tcp://test.mosquitto.org:1883", UUID.randomUUID().toString());
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
+        this.topic = "smartmeter-wout";
 
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
-        options.setConnectionTimeout(10);
 
         try {
+            this.client = new MqttClient("tcp://test.mosquitto.org:1883", UUID.randomUUID().toString());
+            this.client.setCallback(this);
             this.client.connect(options);
         } catch (MqttException e) {
             e.printStackTrace();
         }
     }
 
-    public void publish(String topic, String payload) {
+    public void publish(String payload) {
         if (!this.client.isConnected()) {
             return;
         }
@@ -45,4 +43,27 @@ public class EmbeddedMessagingService {
         }
     }
 
+    @Override
+    public void connectComplete(boolean b, String s) {
+        try {
+            this.client.subscribe(this.topic, 0);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void connectionLost(Throwable throwable) {
+
+    }
+
+    @Override
+    public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+        System.out.println(new String(mqttMessage.getPayload()));
+    }
+
+    @Override
+    public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+
+    }
 }
