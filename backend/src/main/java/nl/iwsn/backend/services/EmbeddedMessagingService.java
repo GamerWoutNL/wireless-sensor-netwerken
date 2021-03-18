@@ -19,7 +19,7 @@ public class EmbeddedMessagingService implements MqttCallbackExtended {
         options.setCleanSession(true);
 
         try {
-            this.client = new MqttClient("tcp://test.mosquitto.org:1883", UUID.randomUUID().toString());
+            this.client = new MqttClient("tcp://test.mosquitto.org:1883", "client-1");
             this.client.setCallback(this);
             this.client.connect(options);
         } catch (MqttException e) {
