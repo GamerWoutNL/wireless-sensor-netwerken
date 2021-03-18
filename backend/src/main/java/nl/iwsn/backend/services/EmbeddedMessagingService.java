@@ -10,8 +10,11 @@ public class EmbeddedMessagingService implements MqttCallbackExtended {
     private static final String topic = "smartmeter-wout";
 
     private IMqttClient client;
+    private final MessageHandlerService messageHandler;
 
-    public EmbeddedMessagingService () {
+    public EmbeddedMessagingService (MessageHandlerService messageHandler) {
+        this.messageHandler = messageHandler;
+
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
@@ -57,7 +60,7 @@ public class EmbeddedMessagingService implements MqttCallbackExtended {
 
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-        System.out.println(new String(mqttMessage.getPayload()));
+        this.messageHandler.handle(new String(mqttMessage.getPayload()));
     }
 
     @Override
