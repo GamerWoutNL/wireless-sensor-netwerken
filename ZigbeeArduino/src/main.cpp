@@ -1,16 +1,9 @@
 #include <Arduino.h>
-// #include <XBee.h>
 
 #define LED_GREEN 12
 #define LED_RED 13
 
-// XBee xbee = XBee();
-// uint8_t payload[5] = { 0x48, 0x6f, 0x6c, 0x61, 0x21 };
-// XBeeAddress64 address = XBeeAddress64(0x0013a200, 0x418f9800); //0013A200418F9800
-// ZBTxRequest request = ZBTxRequest(address, payload, sizeof(payload));
-// ZBTxStatusResponse status = ZBTxStatusResponse();
-
-uint8_t packet[] = { 0x7E, 0x00, 0x12, 0x10, 0x01, 0x00, 0x13, 0xA2, 0x00, 0x41, 0x8F, 0x98, 0x00, 0xFF, 0xFE, 0x00, 0x00, 0x45, 0x77, 0x61, 0x21, 0x96 };
+uint8_t payload[2] = {0, 0};
 
 void flashLed(int pin, int times, int wait) {
   for (int i = 0; i < times; i++) {
@@ -24,9 +17,50 @@ void flashLed(int pin, int times, int wait) {
   }
 }
 
+void send(uint8_t payload[], int length) {
+
+  if (length > 240) {
+    flashLed(LED_RED, 1, 1000);
+    return;
+  }
+
+  uint32_t checksum = 0x42B;
+
+  Serial.write(0x7E); //start
+  Serial.write(0x00); //length lsb
+  Serial.write(14 + length); //length msb
+  Serial.write(0x10); //rx message
+  Serial.write(0x01); //message id
+  Serial.write(0x00); //long address
+  Serial.write(0x13);
+  Serial.write(0xA2);
+  Serial.write(0x00);
+  Serial.write(0x41);
+  Serial.write(0x8F);
+  Serial.write(0x98);
+  Serial.write(0x00);
+  Serial.write(0xFF); //short address
+  Serial.write(0xFE);
+  Serial.write(0x00); //broadcast
+  Serial.write(0x00); //options 42B
+
+  for (int i = 0; i < length; i++) { //payload
+    Serial.write(payload[i]);
+    checksum += payload[i];
+  }
+
+  checksum = checksum & 0xFF;
+  checksum = 0xFF - checksum;
+
+  Serial.write(checksum); //checksum
+
+  flashLed(LED_GREEN, 1, 1000);
+
+  delay(1000);
+}
+
 void setup() {
   Serial.begin(9600);
-  // xbee.begin(Serial);
 
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_RED, OUTPUT);
@@ -36,26 +70,11 @@ void setup() {
 }
 
 void loop() {
-  // xbee.send(request);
+  payload[0] = 45;
+  payload[1] = 46;
+  send(payload, sizeof(payload) / sizeof(payload[0]));
 
-  // if (xbee.readPacket(500)) {       	
-  //   if (xbee.getResponse().getApiId() == ZB_TX_STATUS_RESPONSE) {
-  //     xbee.getResponse().getZBTxStatusResponse(status);
-      
-  //     if (status.getDeliveryStatus() == SUCCESS) {
-  //       flashLed(LED_GREEN, 1, 1000);
-  //     } else {
-  //       flashLed(LED_RED, 1, 1000);
-  //     }
-  //   }
-  // } else if (xbee.getResponse().isError()) {
-  //   flashLed(LED_RED, 4, 500);
-  // } else {
-  //   flashLed(LED_RED, 2, 500);
-  // }
-
-  Serial.write(packet, sizeof(packet));
-  flashLed(LED_GREEN, 1, 1000);
-
-  delay(2000);
+  payload[0] = 42;
+  payload[1] = 49;
+  send(payload, sizeof(payload) / sizeof(payload[0]));
 }

@@ -46,7 +46,9 @@ void loop() {
 
       String received = "";
       for (int i = 0; i < response.getDataLength(); i++) {
-        received += (char)response.getData(i);
+        uint8_t incoming = response.getData(i);
+        received += incoming;
+        received += ", ";
       }
       Serial.println(received);
 
