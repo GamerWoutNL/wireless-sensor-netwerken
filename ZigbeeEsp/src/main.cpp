@@ -42,15 +42,18 @@ void loop() {
     if (xbee.getResponse().getApiId() == ZB_RX_RESPONSE) {
       xbee.getResponse().getZBRxResponse(response);
 
-      Serial.print("Received: ");
+      int temperature = response.getData(0);
+      int humidity = response.getData(1);
 
-      String received = "";
-      for (int i = 0; i < response.getDataLength(); i++) {
-        uint8_t incoming = response.getData(i);
-        received += incoming;
-        received += ", ";
-      }
-      Serial.println(received);
+      Serial.print("Temperature: ");
+      Serial.print(temperature);
+      Serial.println(" C");
+
+      Serial.print("Humidity: ");
+      Serial.print(humidity);
+      Serial.println(" %");
+      
+      Serial.println();
 
       flashLed(LED_GREEN, 1, 1000);
     } else {
