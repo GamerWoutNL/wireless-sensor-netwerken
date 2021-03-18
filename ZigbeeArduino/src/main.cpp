@@ -1,8 +1,12 @@
 #include <Arduino.h>
+#include <DHT.h>
 
+#define DHTPIN 5
+#define DHTTYPE DHT11
 #define LED_GREEN 12
 #define LED_RED 13
 
+DHT dht(DHTPIN, DHTTYPE);
 uint8_t payload[2] = {0, 0};
 
 void flashLed(int pin, int times, int wait) {
@@ -61,20 +65,23 @@ void send(uint8_t payload[], int length) {
 
 void setup() {
   Serial.begin(9600);
+  dht.begin();
 
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_RED, OUTPUT);
-
-  flashLed(LED_GREEN, 3, 50);
-  flashLed(LED_RED, 3, 50);
 }
 
 void loop() {
-  payload[0] = 45;
-  payload[1] = 46;
-  send(payload, sizeof(payload) / sizeof(payload[0]));
+  delay(1000);
+  
+  float humidity = dht.readHumidity();
+  float temperature = dht.readTemperature();
 
-  payload[0] = 42;
-  payload[1] = 49;
+  if (isnan(humidity) || isnan(temperature)) {
+    return;
+  }
+
+  payload[0] = (int)temperature;
+  payload[1] = (int)humidity;
   send(payload, sizeof(payload) / sizeof(payload[0]));
 }
