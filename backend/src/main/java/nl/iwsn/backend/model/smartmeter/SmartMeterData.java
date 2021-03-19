@@ -1,22 +1,23 @@
-package nl.iwsn.backend.model;
+package nl.iwsn.backend.model.smartmeter;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nl.iwsn.backend.model.IData;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DhtData implements IData {
+public class SmartMeterData implements IData {
 
     @Expose
-    @SerializedName("temperature")
-    private int temperature;
+    @SerializedName("id")
+    private String id;
 
     @Expose
-    @SerializedName("humidity")
-    private int humidity;
+    @SerializedName("p1")
+    private Measurement p1;
 
 }

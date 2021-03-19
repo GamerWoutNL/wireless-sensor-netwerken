@@ -1,10 +1,10 @@
 package nl.iwsn.backend.model.serializers;
 
 import com.google.gson.*;
-import nl.iwsn.backend.model.DhtData;
 import nl.iwsn.backend.model.IData;
 import nl.iwsn.backend.model.Message;
-import nl.iwsn.backend.model.SmartMeterData;
+import nl.iwsn.backend.model.dht.DhtData;
+import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 
 import java.lang.reflect.Type;
 
