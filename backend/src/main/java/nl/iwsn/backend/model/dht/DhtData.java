@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import nl.iwsn.backend.model.IData;
 
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Data
 @Builder
@@ -28,7 +28,7 @@ public class DhtData implements IData, JsonDeserializer<DhtData> {
 
     @Expose
     @SerializedName("timestamp")
-    private LocalDateTime timestamp;
+    private ZonedDateTime timestamp;
 
     @Override
     public DhtData deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
@@ -37,7 +37,7 @@ public class DhtData implements IData, JsonDeserializer<DhtData> {
         return DhtData.builder()
                 .temperature(context.deserialize(root.get("temperature"), Integer.class))
                 .humidity(context.deserialize(root.get("humidity"), Integer.class))
-                .timestamp(LocalDateTime.now())
+                .timestamp(ZonedDateTime.now())
                 .build();
     }
 

@@ -36,10 +36,12 @@ public class MessageHandlerService {
 
     private void handleSmartMeterData(SmartMeterData data) {
         System.out.println(data);
+        // Save to database
     }
 
     private void handleDhtData(DhtData data) {
         System.out.println(data);
+        // Save to database
     }
 
 }
