@@ -1,8 +1,7 @@
 package nl.iwsn.backend.services;
 
-import nl.iwsn.backend.database.NextSequenceService;
-import nl.iwsn.backend.database.repositories.DhtRepository;
-import nl.iwsn.backend.database.repositories.SmartMeterRepository;
+import nl.iwsn.backend.repositories.DhtRepository;
+import nl.iwsn.backend.repositories.SmartMeterRepository;
 import nl.iwsn.backend.model.dht.DhtData;
 import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 import org.springframework.stereotype.Service;

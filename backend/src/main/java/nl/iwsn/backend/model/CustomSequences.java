@@ -1,4 +1,4 @@
-package nl.iwsn.backend.database;
+package nl.iwsn.backend.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

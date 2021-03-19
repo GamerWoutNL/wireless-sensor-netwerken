@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.lang.reflect.Type;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -34,7 +34,7 @@ public class DhtData implements IData, JsonDeserializer<DhtData> {
 
     @Expose
     @SerializedName("timestamp")
-    private ZonedDateTime timestamp;
+    private LocalDateTime timestamp;
 
     @Override
     public DhtData deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
@@ -43,7 +43,7 @@ public class DhtData implements IData, JsonDeserializer<DhtData> {
         return DhtData.builder()
                 .temperature(context.deserialize(root.get("temperature"), Integer.class))
                 .humidity(context.deserialize(root.get("humidity"), Integer.class))
-                .timestamp(ZonedDateTime.now())
+                .timestamp(LocalDateTime.now())
                 .build();
     }
 

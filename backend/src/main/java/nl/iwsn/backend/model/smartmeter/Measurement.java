@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -36,7 +35,7 @@ public class Measurement implements JsonDeserializer<Measurement> {
 
     @Expose
     @SerializedName("timestamp")
-    private ZonedDateTime timestamp;
+    private LocalDateTime timestamp;
 
     @Expose
     @SerializedName("equipment_identifier")
@@ -160,7 +159,7 @@ public class Measurement implements JsonDeserializer<Measurement> {
 
     @Expose
     @SerializedName("gas_timestamp")
-    private ZonedDateTime gasTimestamp;
+    private LocalDateTime gasTimestamp;
 
     @Expose
     @SerializedName("gas_usage")
@@ -186,7 +185,7 @@ public class Measurement implements JsonDeserializer<Measurement> {
                 measurement.setDsmrVersion(line.substring(10, length - 1));
 
             } else if (line.startsWith("0-0:1.0.0")) {
-                measurement.setTimestamp(readTimestamp(line.substring(10, Math.min(22, length - 1)), line.charAt(22)));
+                measurement.setTimestamp(readTimestamp(line.substring(10, Math.min(22, length - 1))));
 
             } else if (line.startsWith("0-0:96.1.1")) {
                 measurement.setEquipmentIdentifier(line.substring(11, length - 1));
@@ -279,7 +278,7 @@ public class Measurement implements JsonDeserializer<Measurement> {
                 measurement.setGasEquipmentIdentifier(line.substring(11, length - 1));
 
             } else if (line.startsWith("0-1:24.2.1")) {
-                measurement.setGasTimestamp(readTimestamp(line.substring(11, 23), line.charAt(23)));
+                measurement.setGasTimestamp(readTimestamp(line.substring(11, 23)));
                 measurement.setGasUsage(Double.parseDouble(line.substring(26, length - 4)));
             }
 
@@ -289,18 +288,9 @@ public class Measurement implements JsonDeserializer<Measurement> {
         return measurement;
     }
 
-    private ZonedDateTime readTimestamp(String timestampString, char daylightSaving) {
+    private LocalDateTime readTimestamp(String timestampString) {
         try {
-            LocalDateTime timestamp = LocalDateTime.parse(timestampString, DATE_TIME_FORMATTER);
-            String zonedTimestamp = timestamp.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-            if (daylightSaving == 'W') {
-                zonedTimestamp += "+01:00";
-            } else if (daylightSaving == 'S') {
-                zonedTimestamp += "+02:00";
-            } else {
-                zonedTimestamp += "+00:00";
-            }
-            return ZonedDateTime.parse(zonedTimestamp, DateTimeFormatter.ISO_DATE_TIME);
+            return LocalDateTime.parse(timestampString, DATE_TIME_FORMATTER);
         } catch (DateTimeParseException e) {
             e.printStackTrace();
             return null;
