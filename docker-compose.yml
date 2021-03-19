@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  database:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+  backend:
+    build: ./backend
+    ports:
+      - 9865:9865
+    depends_on:
+      - database

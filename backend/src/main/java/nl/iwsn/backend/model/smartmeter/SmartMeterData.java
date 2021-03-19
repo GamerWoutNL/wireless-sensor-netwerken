@@ -6,11 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nl.iwsn.backend.model.IData;
+import org.springframework.data.annotation.Id;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SmartMeterData implements IData {
+
+    @Id
+    private int uid;
 
     @Expose
     @SerializedName("id")

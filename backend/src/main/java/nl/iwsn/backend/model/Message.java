@@ -31,16 +31,12 @@ public class Message implements JsonDeserializer<Message> {
         JsonObject root = element.getAsJsonObject();
 
         String sensor = context.deserialize(root.get("sensor"), String.class);
-        IData data = null;
 
-        switch (sensor) {
-            case "smartmeter":
-                data = context.deserialize(root.get("data"), SmartMeterData.class);
-                break;
-            case "DHT11":
-                data = context.deserialize(root.get("data"), DhtData.class);
-                break;
-        }
+        IData data = switch (sensor) {
+            case "smartmeter" -> context.deserialize(root.get("data"), SmartMeterData.class);
+            case "DHT11" -> context.deserialize(root.get("data"), DhtData.class);
+            default -> null;
+        };
 
         return Message.builder()
                 .sensor(sensor)

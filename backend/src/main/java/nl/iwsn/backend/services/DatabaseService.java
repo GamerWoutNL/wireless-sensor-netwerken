@@ -1,0 +1,34 @@
+package nl.iwsn.backend.services;
+
+import nl.iwsn.backend.database.NextSequenceService;
+import nl.iwsn.backend.database.repositories.DhtRepository;
+import nl.iwsn.backend.database.repositories.SmartMeterRepository;
+import nl.iwsn.backend.model.dht.DhtData;
+import nl.iwsn.backend.model.smartmeter.SmartMeterData;
+import org.springframework.stereotype.Service;
+
+@Service
+public class DatabaseService {
+
+    private final NextSequenceService nextSequenceService;
+    private final DhtRepository dhtRepository;
+    private final SmartMeterRepository smartMeterRepository;
+
+    public DatabaseService(NextSequenceService nextSequenceService, DhtRepository dhtRepository, SmartMeterRepository smartMeterRepository) {
+        this.nextSequenceService = nextSequenceService;
+        this.dhtRepository = dhtRepository;
+        this.smartMeterRepository = smartMeterRepository;
+    }
+
+    public void saveDhtData(DhtData data) {
+        data.setUid(this.nextSequenceService.getNextSequence("dhtSequence"));
+
+        this.dhtRepository.save(data);
+    }
+
+    public void saveSmartMeterData(SmartMeterData data) {
+        data.setUid(this.nextSequenceService.getNextSequence("smartMeterSequence"));
+
+        this.smartMeterRepository.save(data);
+    }
+}
