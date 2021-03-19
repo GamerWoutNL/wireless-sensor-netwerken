@@ -9,7 +9,9 @@ public class MeasurementSerializer implements JsonDeserializer<Measurement> {
 
     @Override
     public Measurement deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        JsonObject root = element.getAsJsonObject();
+        String payload = element.getAsString();
+
+        // PARSING
 
         return new Measurement();
     }
