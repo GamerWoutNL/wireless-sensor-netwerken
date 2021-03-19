@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import nl.iwsn.backend.model.IData;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
@@ -17,10 +18,11 @@ import java.time.ZonedDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "dhtData")
 public class DhtData implements IData, JsonDeserializer<DhtData> {
 
     @Id
-    private int uid;
+    private String uid;
 
     @Expose
     @SerializedName("temperature")

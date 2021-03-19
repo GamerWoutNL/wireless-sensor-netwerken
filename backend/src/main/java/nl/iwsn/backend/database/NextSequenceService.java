@@ -17,13 +17,13 @@ public class NextSequenceService {
         this.mongo = mongo;
     }
 
-    public int getNextSequence(String seqName) {
+    public String getNextSequence(String seqName) {
         CustomSequences counter = this.mongo.findAndModify(
                 query(where("_id").is(seqName)),
                 new Update().inc("seq",1),
                 options().returnNew(true).upsert(true),
                 CustomSequences.class);
-        return counter.getSeq();
+        return String.valueOf(counter.getSeq());
     }
 
 }
