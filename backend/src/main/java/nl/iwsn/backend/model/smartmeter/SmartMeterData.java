@@ -18,6 +18,6 @@ public class SmartMeterData implements IData {
 
     @Expose
     @SerializedName("p1")
-    private Measurement p1;
+    private Measurement measurement;
 
 }

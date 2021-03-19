@@ -1,5 +1,9 @@
 package nl.iwsn.backend.model.smartmeter;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
@@ -7,13 +11,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Measurement {
+public class Measurement implements JsonDeserializer<Measurement> {
 
     @Expose
     @SerializedName("positive_active_energy_tariff_one_kwh")
@@ -42,6 +47,14 @@ public class Measurement {
     @Expose
     @SerializedName("instantaneous_negative_active_power_all_phases")
     private double instantaneousNegativeActivePowerAllPhases;
+
+    @Expose
+    @SerializedName("power_failures_all_phases")
+    private int powerFailuresAllPhases;
+
+    @Expose
+    @SerializedName("long_power_failures_all_phases")
+    private int longPowerFailuresAllPhases;
 
     @Expose
     @SerializedName("voltage_sags_phase_one")
@@ -118,5 +131,16 @@ public class Measurement {
     @Expose
     @SerializedName("timestamp")
     private LocalDateTime timestamp;
+
+    @Override
+    public Measurement deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+        String payload = element.getAsString();
+
+        // PARSING
+
+        return Measurement.builder()
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
 
 }
