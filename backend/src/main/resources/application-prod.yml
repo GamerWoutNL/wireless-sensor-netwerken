@@ -1,0 +1,6 @@
+server.port: 9865
+
+spring.data.mongodb:
+  host: database
+  port: 27017
+  database: iwsn

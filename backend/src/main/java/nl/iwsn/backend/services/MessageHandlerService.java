@@ -2,20 +2,24 @@ package nl.iwsn.backend.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import nl.iwsn.backend.model.DhtData;
 import nl.iwsn.backend.model.Message;
-import nl.iwsn.backend.model.SmartMeterData;
-import nl.iwsn.backend.model.serializers.MessageSerializer;
+import nl.iwsn.backend.model.dht.DhtData;
+import nl.iwsn.backend.model.smartmeter.Measurement;
+import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MessageHandlerService {
 
     private final Gson gson;
+    private final DatabaseService databaseService;
 
-    public MessageHandlerService() {
+    public MessageHandlerService(DatabaseService databaseService) {
+        this.databaseService = databaseService;
         this.gson = new GsonBuilder()
-                .registerTypeAdapter(Message.class, new MessageSerializer())
+                .registerTypeAdapter(Message.class, new Message())
+                .registerTypeAdapter(Measurement.class, new Measurement())
+                .registerTypeAdapter(DhtData.class, new DhtData())
                 .create();
     }
 
@@ -23,21 +27,17 @@ public class MessageHandlerService {
         Message message = this.gson.fromJson(rawMessage, Message.class);
 
         switch (message.getSensor()) {
-            case "smartmeter":
-                this.handleSmartMeter((SmartMeterData) message.getData());
-                break;
-            case "DHT11":
-                this.handleDhtData((DhtData) message.getData());
-                break;
+            case "smartmeter" -> this.handleSmartMeterData((SmartMeterData) message.getData());
+            case "DHT11" -> this.handleDhtData((DhtData) message.getData());
         }
     }
 
-    private void handleSmartMeter(SmartMeterData data) {
-        System.out.println("GOT SMART METER DATA");
+    private void handleSmartMeterData(SmartMeterData data) {
+        this.databaseService.saveSmartMeterData(data);
     }
 
     private void handleDhtData(DhtData data) {
-        System.out.println("GOT DHT DATA");
+        this.databaseService.saveDhtData(data);
     }
 
 }
