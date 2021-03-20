@@ -1,5 +1,6 @@
 package nl.iwsn.backend.model.dht;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -22,18 +23,20 @@ import java.time.LocalDateTime;
 public class DhtData implements IData, JsonDeserializer<DhtData> {
 
     @Id
+    @JsonProperty("uid")
     private String uid;
 
     @Expose
     @SerializedName("temperature")
+    @JsonProperty("temperature")
     private int temperature;
 
     @Expose
     @SerializedName("humidity")
+    @JsonProperty("humidity")
     private int humidity;
 
-    @Expose
-    @SerializedName("timestamp")
+    @JsonProperty("timestamp")
     private LocalDateTime timestamp;
 
     @Override

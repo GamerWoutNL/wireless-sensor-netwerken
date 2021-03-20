@@ -1,5 +1,6 @@
 package nl.iwsn.backend.model.smartmeter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
@@ -16,14 +17,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class SmartMeterData implements IData {
 
     @Id
+    @JsonProperty("uid")
     private String uid;
 
     @Expose
     @SerializedName("id")
+    @JsonProperty("id")
     private String id;
 
     @Expose
     @SerializedName("p1")
+    @JsonProperty("measurement")
     private Measurement measurement;
 
 }

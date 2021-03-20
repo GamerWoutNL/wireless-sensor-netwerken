@@ -1,12 +1,13 @@
 package nl.iwsn.backend.api;
 
 import nl.iwsn.backend.model.dht.DhtData;
+import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 import nl.iwsn.backend.services.DatabaseService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
@@ -18,9 +19,14 @@ public class TestController {
         this.databaseService = databaseService;
     }
 
-    @GetMapping("test")
-    public void get() {
-        databaseService.saveDhtData(DhtData.builder().temperature(23).humidity(56).timestamp(LocalDateTime.now()).build());
+    @GetMapping("dht")
+    public List<DhtData> getAllDhtData() {
+        return this.databaseService.getAllDhtData();
+    }
+
+    @GetMapping("smartmeter")
+    public List<SmartMeterData> getAllSmartMeterData() {
+        return this.databaseService.getAllSmartMeterData();
     }
 
 }

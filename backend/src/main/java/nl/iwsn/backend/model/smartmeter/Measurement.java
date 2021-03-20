@@ -1,11 +1,10 @@
 package nl.iwsn.backend.model.smartmeter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,144 +24,109 @@ public class Measurement implements JsonDeserializer<Measurement> {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyMMddHHmmss");
 
-    @Expose
-    @SerializedName("identification")
+    @JsonProperty("identification")
     private String identification;
 
-    @Expose
-    @SerializedName("dsmr_version")
+    @JsonProperty("dsmr_version")
     private String dsmrVersion;
 
-    @Expose
-    @SerializedName("timestamp")
+    @JsonProperty("timestamp")
     private LocalDateTime timestamp;
 
-    @Expose
-    @SerializedName("equipment_identifier")
+    @JsonProperty("equipment_identifier")
     private String equipmentIdentifier;
 
-    @Expose
-    @SerializedName("energy_used_tariff_one")
+    @JsonProperty("energy_used_tariff_one")
     private double energyUsedTariffOne;
 
-    @Expose
-    @SerializedName("energy_used_tariff_two")
+    @JsonProperty("energy_used_tariff_two")
     private double energyUsedTariffTwo;
 
-    @Expose
-    @SerializedName("energy_produced_tariff_one")
+    @JsonProperty("energy_produced_tariff_one")
     private double energyProducedTariffOne;
 
-    @Expose
-    @SerializedName("energy_produced_tariff_two")
+    @JsonProperty("energy_produced_tariff_two")
     private double energyProducedTariffTwo;
 
-    @Expose
-    @SerializedName("tariff_indicator")
+    @JsonProperty("tariff_indicator")
     private int tariffIndicator;
 
-    @Expose
-    @SerializedName("instantaneous_power_used")
+    @JsonProperty("instantaneous_power_used")
     private double instantaneousPowerUsed;
 
-    @Expose
-    @SerializedName("instantaneous_power_produced")
+    @JsonProperty("instantaneous_power_produced")
     private double instantaneousPowerProduced;
 
-    @Expose
-    @SerializedName("power_failures")
+    @JsonProperty("power_failures")
     private int powerFailures;
 
-    @Expose
-    @SerializedName("long_power_failures")
+    @JsonProperty("long_power_failures")
     private int longPowerFailures;
 
-    @Expose
-    @SerializedName("voltage_sags_phase_one")
+    @JsonProperty("voltage_sags_phase_one")
     private int voltageSagsPhaseOne;
 
-    @Expose
-    @SerializedName("voltage_sags_phase_two")
+    @JsonProperty("voltage_sags_phase_two")
     private int voltageSagsPhaseTwo;
 
-    @Expose
-    @SerializedName("voltage_sags_phase_three")
+    @JsonProperty("voltage_sags_phase_three")
     private int voltageSagsPhaseThree;
 
-    @Expose
-    @SerializedName("voltage_swells_phase_one")
+    @JsonProperty("voltage_swells_phase_one")
     private int voltageSwellsPhaseOne;
 
-    @Expose
-    @SerializedName("voltage_swells_phase_two")
+    @JsonProperty("voltage_swells_phase_two")
     private int voltageSwellsPhaseTwo;
 
-    @Expose
-    @SerializedName("voltage_swells_phase_three")
+    @JsonProperty("voltage_swells_phase_three")
     private int voltageSwellsPhaseThree;
 
-    @Expose
-    @SerializedName("instantaneous_voltage_phase_one")
+    @JsonProperty("instantaneous_voltage_phase_one")
     private double instantaneousVoltagePhaseOne;
 
-    @Expose
-    @SerializedName("instantaneous_voltage_phase_two")
+    @JsonProperty("instantaneous_voltage_phase_two")
     private double instantaneousVoltagePhaseTwo;
 
-    @Expose
-    @SerializedName("instantaneous_voltage_phase_three")
+    @JsonProperty("instantaneous_voltage_phase_three")
     private double instantaneousVoltagePhaseThree;
 
-    @Expose
-    @SerializedName("instantaneous_current_phase_one")
+    @JsonProperty("instantaneous_current_phase_one")
     private double instantaneousCurrentPhaseOne;
 
-    @Expose
-    @SerializedName("instantaneous_current_phase_two")
+    @JsonProperty("instantaneous_current_phase_two")
     private double instantaneousCurrentPhaseTwo;
 
-    @Expose
-    @SerializedName("instantaneous_current_phase_three")
+    @JsonProperty("instantaneous_current_phase_three")
     private double instantaneousCurrentPhaseThree;
 
-    @Expose
-    @SerializedName("instantaneous_power_used_phase_one")
+    @JsonProperty("instantaneous_power_used_phase_one")
     private double instantaneousPowerUsedPhaseOne;
 
-    @Expose
-    @SerializedName("instantaneous_power_used_phase_two")
+    @JsonProperty("instantaneous_power_used_phase_two")
     private double instantaneousPowerUsedPhaseTwo;
 
-    @Expose
-    @SerializedName("instantaneous_power_used_phase_three")
+    @JsonProperty("instantaneous_power_used_phase_three")
     private double instantaneousPowerUsedPhaseThree;
 
-    @Expose
-    @SerializedName("instantaneous_power_produced_phase_one")
+    @JsonProperty("instantaneous_power_produced_phase_one")
     private double instantaneousPowerProducedPhaseOne;
 
-    @Expose
-    @SerializedName("instantaneous_power_produced_phase_two")
+    @JsonProperty("instantaneous_power_produced_phase_two")
     private double instantaneousPowerProducedPhaseTwo;
 
-    @Expose
-    @SerializedName("instantaneous_power_produced_phase_three")
+    @JsonProperty("instantaneous_power_produced_phase_three")
     private double instantaneousPowerProducedPhaseThree;
 
-    @Expose
-    @SerializedName("device_type")
+    @JsonProperty("device_type")
     private String deviceType;
 
-    @Expose
-    @SerializedName("gas_equipment_identifier")
+    @JsonProperty("gas_equipment_identifier")
     private String gasEquipmentIdentifier;
 
-    @Expose
-    @SerializedName("gas_timestamp")
+    @JsonProperty("gas_timestamp")
     private LocalDateTime gasTimestamp;
 
-    @Expose
-    @SerializedName("gas_usage")
+    @JsonProperty("gas_usage")
     private double gasUsage;
 
     @Override
