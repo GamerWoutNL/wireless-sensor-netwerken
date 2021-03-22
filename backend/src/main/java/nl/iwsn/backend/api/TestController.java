@@ -1,11 +1,10 @@
 package nl.iwsn.backend.api;
 
 import nl.iwsn.backend.model.dht.DhtData;
+import nl.iwsn.backend.model.smartmeter.Measurement;
 import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 import nl.iwsn.backend.services.DatabaseService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,4 +28,13 @@ public class TestController {
         return this.databaseService.getAllSmartMeterData();
     }
 
+    @GetMapping("currentpower")
+    public Double getWoutPower() {
+        return this.databaseService.getCurrentPower();
+    }
+
+    @GetMapping("getlasthours/{hours}")
+    public List<Double> getLastHours(@PathVariable int hours) {
+        return this.databaseService.getPowerLastXHours(hours);
+    }
 }
