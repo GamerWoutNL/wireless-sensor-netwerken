@@ -23,9 +23,7 @@ public class GlobalMeasurement {
 
     @JsonProperty("instantaneous_power_used")
     private double currentInstantaneousPowerUsed;
-
-    private List<Double> 
-
+    
 
 
 }
