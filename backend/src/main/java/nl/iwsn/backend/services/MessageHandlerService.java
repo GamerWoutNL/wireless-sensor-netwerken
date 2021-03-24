@@ -13,11 +13,9 @@ public class MessageHandlerService {
 
     private final Gson gson;
     private final DatabaseService databaseService;
-    private final WebSocketService webSocketService;
 
-    public MessageHandlerService(DatabaseService databaseService, WebSocketService webSocketService) {
+    public MessageHandlerService(DatabaseService databaseService) {
         this.databaseService = databaseService;
-        this.webSocketService = webSocketService;
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Message.class, new Message())
                 .registerTypeAdapter(Measurement.class, new Measurement())
@@ -35,8 +33,7 @@ public class MessageHandlerService {
     }
 
     private void handleSmartMeterData(SmartMeterData data) {
-        //this.databaseService.saveSmartMeterData(data);
-        this.webSocketService.send("hello");
+        this.databaseService.saveSmartMeterData(data);
     }
 
     private void handleDhtData(DhtData data) {

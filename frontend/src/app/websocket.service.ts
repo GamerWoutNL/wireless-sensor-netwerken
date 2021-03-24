@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-
+import { Injectable, EventEmitter } from '@angular/core';
+ 
 declare var SockJS;
 declare var Stomp;
 
@@ -8,7 +8,8 @@ declare var Stomp;
 })
 export class WebsocketService {
 
-  public stompClient;
+  private stompClient;
+  public eventHandler: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { 
     this.initializeWebSocketConnection();
@@ -23,14 +24,10 @@ export class WebsocketService {
     this.stompClient.connect({}, function(frame) {
       that.stompClient.subscribe('/topic/data', (message) => {
         if (message.body) {
-          alert(message.body);
+          that.eventHandler.emit(message.body);
         }
       });
     });
-  }
-
-  sendMessage(message: string) {
-    //this.stompClient.send('/app/topic/message' , {}, message);
   }
 
 }

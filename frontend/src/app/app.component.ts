@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { WebsocketService } from './websocket.service';
 
 @Component({
@@ -9,12 +10,25 @@ import { WebsocketService } from './websocket.service';
 export class AppComponent {
 
   title = 'Websockets';
-  input;
+  message = "";
 
-  constructor(private websocketService: WebsocketService) { 
+  private websocketSubscription: Subscription | undefined;
+
+  constructor(private websocketService: WebsocketService) { }
+
+  ngOnInit() {
+    this.websocketSubscription = this.websocketService.eventHandler.subscribe((message) => this.onMessageReceive(message));
   }
 
-  sendMessage(message: string) {
-    this.websocketService.sendMessage(message);
+  ngOnDestroy() {
+    if (this.websocketSubscription) {
+      this.websocketSubscription.unsubscribe();
+    }
   }
+
+  onMessageReceive(message: string): void {
+    this.message = message;
+  }
+
+
 }
