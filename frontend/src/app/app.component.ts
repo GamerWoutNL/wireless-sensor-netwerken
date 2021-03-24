@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WebsocketService } from './websocket.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'frontend';
+
+  title = 'Websockets';
+  input;
+
+  constructor(private websocketService: WebsocketService) { 
+  }
+
+  sendMessage(message: string) {
+    this.websocketService.sendMessage(message);
+  }
 }

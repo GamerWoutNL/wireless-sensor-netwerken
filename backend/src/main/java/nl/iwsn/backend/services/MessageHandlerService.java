@@ -35,7 +35,7 @@ public class MessageHandlerService {
     }
 
     private void handleSmartMeterData(SmartMeterData data) {
-        this.databaseService.saveSmartMeterData(data);
+        //this.databaseService.saveSmartMeterData(data);
         this.webSocketService.send("hello");
     }
 
