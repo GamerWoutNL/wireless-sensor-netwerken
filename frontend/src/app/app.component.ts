@@ -9,10 +9,9 @@ import { WebsocketService } from './websocket.service';
 })
 export class AppComponent {
 
-  title = 'Websockets';
-  message = "";
-
   private websocketSubscription: Subscription | undefined;
+  message = "";
+  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
 
   constructor(private websocketService: WebsocketService) { }
 
@@ -29,6 +28,5 @@ export class AppComponent {
   onMessageReceive(message: string): void {
     this.message = message;
   }
-
 
 }

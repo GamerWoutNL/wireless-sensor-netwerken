@@ -14,7 +14,7 @@ HardwareSerial XbeeSerial(1);
 XBee xbee = XBee();
 ZBRxResponse response = ZBRxResponse();
 
-const char* wifi_ssid = "FRITZ!Box Fon WLAN 7360";
+const char* wifi_ssid = "FritzBox";
 const char* wifi_password = "StevensLegstraat";
 const char* mqtt_server = "test.mosquitto.org";
 const int mqtt_port = 1883;
