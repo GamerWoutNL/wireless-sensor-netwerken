@@ -21,7 +21,11 @@ public class MeasurementService {
 
         // trend
 
-        // Gemeten grootheden van dht
+        double totalCost = databaseService.getTotalCost();
+
+        int temperature = databaseService.getTemperature();
+
+        int humidity = databaseService.getHumidity();
 
         // Status
 

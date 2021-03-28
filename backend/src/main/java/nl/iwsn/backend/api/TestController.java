@@ -37,4 +37,19 @@ public class TestController {
     public List<Double> getLastHours(@PathVariable int hours) {
         return this.databaseService.getPowerLastXHours(hours);
     }
+
+    @GetMapping("total-cost")
+    public double getTotalCosts() {
+        return this.databaseService.getTotalCost();
+    }
+
+    @GetMapping("temperature")
+    public int getTemperature() {
+        return this.databaseService.getTemperature();
+    }
+
+    @GetMapping("humidity")
+    public int getHumidity() {
+        return this.databaseService.getHumidity();
+    }
 }

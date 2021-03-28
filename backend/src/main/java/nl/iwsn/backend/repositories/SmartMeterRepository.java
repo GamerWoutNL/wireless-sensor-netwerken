@@ -1,6 +1,5 @@
 package nl.iwsn.backend.repositories;
 
-import nl.iwsn.backend.model.smartmeter.Measurement;
 import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

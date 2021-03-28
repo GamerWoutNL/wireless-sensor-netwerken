@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,4 +64,21 @@ public class DatabaseService {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+    public double getTotalCost() {
+        List<SmartMeterData> smartMeterData = smartMeterRepository.findAll();
+        Collections.sort(smartMeterData);
+        SmartMeterData lastSmartMeterData = smartMeterData.get(smartMeterData.size() - 1);
+        // 0.22 is the average tarrif in the Netherlands
+        return (lastSmartMeterData.getMeasurement().getEnergyUsedTariffOne() + lastSmartMeterData.getMeasurement().getEnergyUsedTariffTwo()) * 0.22;
+    }
+
+    public int getTemperature() {
+        DhtData data = dhtRepository.findFirstByOrderByTimestampDesc();
+        return data.getTemperature();
+    }
+
+    public int getHumidity() {
+        DhtData data = dhtRepository.findFirstByOrderByTimestampDesc();
+        return data.getHumidity();
+    }
 }
