@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { config } from '../app/config'
  
 declare var SockJS;
 declare var Stomp;
@@ -15,14 +16,17 @@ export class WebsocketService {
     this.initializeWebSocketConnection();
   }
 
-  initializeWebSocketConnection() {
-    const serverUrl = 'http://localhost:9865/iwsn';
-    const ws = new SockJS(serverUrl);
+  initializeWebSocketConnection(): void {
+    const ws = new SockJS(config.backend + '/iwsn');
     this.stompClient = Stomp.over(ws);
     const that = this;
     
-    this.stompClient.connect({}, function(frame) {
-      that.stompClient.subscribe('/topic/data', (message) => {
+    this.stompClient.connect(
+      {}, 
+      (frame) => {
+        console.log(frame);
+
+        that.stompClient.subscribe('/topic/data', (message) => {
         if (message.body) {
           that.eventHandler.emit(message.body);
         }
