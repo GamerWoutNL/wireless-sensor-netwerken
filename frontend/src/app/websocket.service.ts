@@ -17,7 +17,7 @@ export class WebsocketService {
   }
 
   initializeWebSocketConnection(): void {
-    const ws = new SockJS(config.backend + '/iwsn');
+    const ws = new SockJS(config.backend.host + '/iwsn');
     this.stompClient = Stomp.over(ws);
     const that = this;
     
