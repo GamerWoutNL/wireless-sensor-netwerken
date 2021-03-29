@@ -79,11 +79,11 @@ public class DatabaseService {
         List<SmartMeterData> smartMeterData = smartMeterRepository.findAll();
         Collections.sort(smartMeterData);
         SmartMeterData lastSmartMeterData = smartMeterData.get(smartMeterData.size() - 1);
-        return lastSmartMeterData.getMeasurement().getTimestamp().until(LocalDateTime.now(), ChronoUnit.MINUTES) <= 1;
+        return lastSmartMeterData.getMeasurement().getTimestamp().until(LocalDateTime.now(), ChronoUnit.SECONDS) <= 60;
     }
 
     public boolean getDhtStatus() {
-        return dhtRepository.findFirstByOrderByTimestampDesc().getTimestamp().until(LocalDateTime.now(), ChronoUnit.MINUTES) <= 1;
+        return dhtRepository.findFirstByOrderByTimestampDesc().getTimestamp().until(LocalDateTime.now(), ChronoUnit.SECONDS) <= 60;
     }
 
 }
