@@ -46,14 +46,19 @@ export class AppComponent {
     this.websocketSubscription = this.websocketService.eventHandler.subscribe((message) => this.onMessageReceive(message));
   }
 
+  ngAfterViewChecked () {
+    this.websocketService.send('login');
+  }
+
   ngOnDestroy() {
     if (this.websocketSubscription) {
       this.websocketSubscription.unsubscribe();
     }
+    this.websocketService.disconnect();
   }
 
   onMessageReceive(message: string): void {
-    this.globalMeasurement = JSON.parse(message)
+    this.globalMeasurement = JSON.parse(message);
   }
 
 }

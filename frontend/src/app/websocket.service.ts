@@ -22,7 +22,7 @@ export class WebsocketService {
     const that = this;
     
     this.stompClient.connect(
-      {}, 
+      config.backend.auth, 
       () => {
         that.stompClient.subscribe('/topic/data', (message) => {
         if (message.body) {
@@ -30,6 +30,19 @@ export class WebsocketService {
         }
       });
     });
+  }
+
+  disconnect (): void {
+    if (this.stompClient) {
+      this.stompClient.disconnect()
+    }
+  }
+
+  send (payload: string): void {
+    if (this.stompClient && this.stompClient.connected) {
+      this.stompClient.send('/app/data', payload, {})
+      console.log(payload)
+    }
   }
 
 }
