@@ -1,0 +1,12 @@
+<div class="card card-settings" style="width: 20vw;">
+  <div class="font-light label">{{label}}</div>
+  <div *ngIf="trend > 0; else trendDown" class="font-medium value">{{value}} <i class="bi bi-arrow-up-right"></i></div>
+</div>
+
+<ng-template #trendDown>
+  <div *ngIf="trend < 0; else trendEqual" class="font-medium value">{{value}} <i class="bi bi-arrow-down-right"></i></div>
+</ng-template>
+
+<ng-template #trendEqual>
+  <div class="font-medium value">{{value}}</div>
+</ng-template>
