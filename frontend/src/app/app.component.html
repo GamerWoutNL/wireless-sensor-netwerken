@@ -13,7 +13,7 @@
       <app-simple-value-holder label="Luchtvochtigheid %" [value]="(globalMeasurement.humidity).toString()"></app-simple-value-holder>
     </div>
     <div class="col">
-      <app-simple-value-holder *ngIf="globalMeasurement.dhtStatus === true; else passiveSmartMeter" label="Status DHT" value="Actief"></app-simple-value-holder>
+      <app-simple-value-holder *ngIf="globalMeasurement.dhtStatus === true; else passiveDht" label="Status DHT" value="Actief"></app-simple-value-holder>
     </div>
   </div>
   <div class="row row-settings">
@@ -26,6 +26,9 @@
     <div class="col">
       <app-simple-value-holder *ngIf="globalMeasurement.smartMeterStatus === true; else passiveSmartMeter" label="Status slimme meter" value="Actief"></app-simple-value-holder>
     </div>
+  </div>
+  <div class="row row-settings">
+    <app-graph [values]="(globalMeasurement.powerOverHours)" label="Amount test over hour"></app-graph>
   </div>
 </div>
 
