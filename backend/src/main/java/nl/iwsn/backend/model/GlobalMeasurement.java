@@ -30,7 +30,28 @@ public class GlobalMeasurement {
 
     @JsonProperty("instantaneous_power_used")
     private double currentInstantaneousPowerUsed;
-    
 
+    @JsonProperty("power_over_hours")
+    private List<Double> powerOverHours;
 
+    @JsonProperty("total_cost")
+    private double totalCost;
+
+    @JsonProperty("temperature")
+    private int temperature;
+
+    @JsonProperty("humidity")
+    private int humidity;
+
+    @JsonProperty("smart_meter_status")
+    private boolean smartMeterStatus;
+
+    @JsonProperty("dht_status")
+    private boolean dhtStatus;
+
+    @JsonProperty("temperature_trend")
+    private double temperatureTrend;
+
+    @JsonProperty("humidity_trend")
+    private double humidityTrend;
 }

@@ -81,4 +81,16 @@ public class DatabaseService {
         DhtData data = dhtRepository.findFirstByOrderByTimestampDesc();
         return data.getHumidity();
     }
+
+    public boolean getSmartMeterStatus() {
+        List<SmartMeterData> smartMeterData = smartMeterRepository.findAll();
+        Collections.sort(smartMeterData);
+        SmartMeterData lastSmartMeterData = smartMeterData.get(smartMeterData.size() - 1);
+        return lastSmartMeterData.getMeasurement().getTimestamp().until(LocalDateTime.now(), ChronoUnit.MINUTES) <= 1;
+    }
+
+    public boolean getDhtStatus() {
+        return dhtRepository.findFirstByOrderByTimestampDesc().getTimestamp().until(LocalDateTime.now(), ChronoUnit.MINUTES) <= 1;
+    }
+
 }

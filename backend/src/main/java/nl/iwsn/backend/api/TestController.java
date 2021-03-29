@@ -4,6 +4,7 @@ import nl.iwsn.backend.model.dht.DhtData;
 import nl.iwsn.backend.model.smartmeter.Measurement;
 import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 import nl.iwsn.backend.services.DatabaseService;
+import nl.iwsn.backend.services.MeasurementService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.List;
 public class TestController {
 
     private final DatabaseService databaseService;
+    private final MeasurementService measurementService;
 
-    public TestController(DatabaseService databaseService) {
+    public TestController(DatabaseService databaseService, MeasurementService measurementService) {
         this.databaseService = databaseService;
+        this.measurementService = measurementService;
     }
 
     @GetMapping("dht")
@@ -51,5 +54,25 @@ public class TestController {
     @GetMapping("humidity")
     public int getHumidity() {
         return this.databaseService.getHumidity();
+    }
+
+    @GetMapping("dht-status")
+    public boolean getDhtStatus() {
+        return this.databaseService.getDhtStatus();
+    }
+
+    @GetMapping("smart-meter-status")
+    public boolean getSmartMeterStatus() {
+        return this.databaseService.getSmartMeterStatus();
+    }
+
+    @GetMapping("humidity-trend")
+    public double getHumidityTrend() {
+        return this.measurementService.calculateHumidityTrend();
+    }
+
+    @GetMapping("temperature-trend")
+    public double getTemperatureTrend() {
+        return this.measurementService.calculateTemperatureTrend();
     }
 }
