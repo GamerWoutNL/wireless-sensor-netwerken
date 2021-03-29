@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from './websocket.service';
 import { GlobalMeasurement } from './model/global.measurement';
+import { HttpServiceService } from './http-service.service'
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ export class AppComponent {
   title = 'frontend';
   globalMeasurement: GlobalMeasurement;
 
-  constructor(private websocketService: WebsocketService) { 
+  constructor(private websocketService: WebsocketService, private httpService: HttpServiceService) { 
     this.globalMeasurement = {
       timestamp: {
         date: {
@@ -44,10 +45,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.websocketSubscription = this.websocketService.eventHandler.subscribe((message) => this.onMessageReceive(message));
-  }
-
-  ngAfterViewChecked () {
-    this.websocketService.send('login');
+    this.httpService.getData();
   }
 
   ngOnDestroy() {
