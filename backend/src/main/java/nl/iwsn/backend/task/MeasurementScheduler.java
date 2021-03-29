@@ -22,7 +22,7 @@ public class MeasurementScheduler {
         this.gson = new Gson();
     }
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0/15 * * * * *")
     public void generateGlobalMeasurement() {
         GlobalMeasurement measurement = this.measurementService.createMeasurement(24);
         this.webSocketService.send(this.gson.toJson(measurement));
