@@ -57,6 +57,7 @@ export class AppComponent {
 
   onMessageReceive(message: string): void {
     this.globalMeasurement = JSON.parse(message);
+    console.log(this.globalMeasurement.timestamp);
   }
 
 }

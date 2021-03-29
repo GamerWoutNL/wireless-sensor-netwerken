@@ -1,16 +1,18 @@
 <nav class="navbar navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">
+  <a class="navbar-brand">
     <div class="font-light" style="padding-left: 1vw; font-size: 1.5vw;">Internet of Things dashboard</div>
+    <div class="timestamp-container"><div class="header-timestamp font-light" style="padding-left: 1vw; font-size: 0.8vw;">Laats bijgewerkt:  {{globalMeasurement.timestamp.time.hour}}:{{globalMeasurement.timestamp.time.minute}} {{globalMeasurement.timestamp.date.day}}/{{globalMeasurement.timestamp.date.month}}/{{globalMeasurement.timestamp.date.year}}</div></div>
+    
   </a>
 </nav>
 
 <div class="container background">
   <div class="row row-settings">
     <div class="col">
-      <app-simple-value-holder label="Temperatuur °C" [value]="(globalMeasurement.temperature).toString()"></app-simple-value-holder>
+      <app-simple-value-holder label="Temperatuur °C" [value]="(globalMeasurement.temperature).toString()" [trend]="(globalMeasurement.temperatureTrend)"></app-simple-value-holder>
     </div>
     <div class="col">
-      <app-simple-value-holder label="Luchtvochtigheid %" [value]="(globalMeasurement.humidity).toString()"></app-simple-value-holder>
+      <app-simple-value-holder label="Luchtvochtigheid %" [value]="(globalMeasurement.humidity).toString()" [trend]="(globalMeasurement.humidityTrend)"></app-simple-value-holder>
     </div>
     <div class="col">
       <app-simple-value-holder *ngIf="globalMeasurement.dhtStatus === true; else passiveDht" label="Status DHT" value="Actief"></app-simple-value-holder>
@@ -33,9 +35,9 @@
 </div>
 
 <ng-template #passiveSmartMeter>
-  <app-simple-value-holder label="Status slimme meter" value="Passief"></app-simple-value-holder>
+  <app-simple-value-holder label="Status slimme meter" value="Inactief"></app-simple-value-holder>
 </ng-template>
 
 <ng-template #passiveDht>
-  <app-simple-value-holder label="Status DHT" value="Passief"></app-simple-value-holder>
+  <app-simple-value-holder label="Status DHT" value="Inactief"></app-simple-value-holder>
 </ng-template>

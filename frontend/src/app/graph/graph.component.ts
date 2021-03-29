@@ -55,6 +55,5 @@ lineChartData: ChartDataSets[] = [
     this.lineChartData = [
       { data: this.values, label: this.label },
     ];
-    console.log(this.lineChartData);
   }
 }
