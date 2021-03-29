@@ -23,9 +23,7 @@ export class WebsocketService {
     
     this.stompClient.connect(
       {}, 
-      (frame) => {
-        console.log(frame);
-
+      () => {
         that.stompClient.subscribe('/topic/data', (message) => {
         if (message.body) {
           that.eventHandler.emit(message.body);

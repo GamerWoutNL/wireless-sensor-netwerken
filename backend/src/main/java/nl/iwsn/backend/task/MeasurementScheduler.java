@@ -25,7 +25,6 @@ public class MeasurementScheduler {
     @Scheduled(cron = "0 * * * * *")
     public void generateGlobalMeasurement() {
         GlobalMeasurement measurement = this.measurementService.createMeasurement(24);
-        String jsonString = gson.toJson(measurement);
-        webSocketService.send(jsonString);
+        this.webSocketService.send(this.gson.toJson(measurement));
     }
 }

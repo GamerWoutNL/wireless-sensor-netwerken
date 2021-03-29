@@ -29,11 +29,12 @@ public class MeasurementService {
         measurement.setDhtStatus(databaseService.getDhtStatus());
         measurement.setHumidityTrend(calculateHumidityTrend());
         measurement.setTemperatureTrend(calculateTemperatureTrend());
+        measurement.setTimestamp(LocalDateTime.now());
         return measurement;
     }
 
     public double calculateHumidityTrend() {
-        List<DhtData> dhtData = databaseService.getAllDhtData()
+        List<DhtData> dhtData = this.databaseService.getAllDhtData()
                 .stream()
                 .filter(dhtData1 -> dhtData1.getTimestamp().until(LocalDateTime.now(), ChronoUnit.MINUTES) <= 60)
                 .collect(Collectors.toList());
@@ -41,7 +42,7 @@ public class MeasurementService {
     }
 
     public double calculateTemperatureTrend() {
-        List<DhtData> dhtData = databaseService.getAllDhtData()
+        List<DhtData> dhtData = this.databaseService.getAllDhtData()
                 .stream()
                 .filter(dhtData1 -> dhtData1.getTimestamp().until(LocalDateTime.now(), ChronoUnit.MINUTES) <= 60)
                 .collect(Collectors.toList());

@@ -4,3 +4,7 @@ spring.data.mongodb:
   host: database
   port: 27017
   database: iwsn
+
+mqtt:
+  host: tcp://test.mosquitto.org:1883
+  topic: smartmeter-wout

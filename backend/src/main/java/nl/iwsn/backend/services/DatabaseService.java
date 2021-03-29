@@ -1,21 +1,14 @@
 package nl.iwsn.backend.services;
 
-import com.mongodb.client.MongoClients;
 import nl.iwsn.backend.model.smartmeter.Measurement;
 import nl.iwsn.backend.repositories.DhtRepository;
 import nl.iwsn.backend.repositories.SmartMeterRepository;
 import nl.iwsn.backend.model.dht.DhtData;
 import nl.iwsn.backend.model.smartmeter.SmartMeterData;
-import org.apache.tomcat.jni.Local;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -68,7 +61,7 @@ public class DatabaseService {
         List<SmartMeterData> smartMeterData = smartMeterRepository.findAll();
         Collections.sort(smartMeterData);
         SmartMeterData lastSmartMeterData = smartMeterData.get(smartMeterData.size() - 1);
-        // 0.22 is the average tarrif in the Netherlands
+        // 0.22 is the average tariff in the Netherlands
         return (lastSmartMeterData.getMeasurement().getEnergyUsedTariffOne() + lastSmartMeterData.getMeasurement().getEnergyUsedTariffTwo()) * 0.22;
     }
 

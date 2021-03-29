@@ -7,24 +7,32 @@
 <div class="container background">
   <div class="row row-settings">
     <div class="col">
-      <app-simple-value-holder label="Temperatuur °C" [value]="value"></app-simple-value-holder>
+      <app-simple-value-holder label="Temperatuur °C" [value]="(globalMeasurement.temperature).toString()"></app-simple-value-holder>
     </div>
     <div class="col">
-      <app-simple-value-holder label="Temperatuur °C" [value]="value"></app-simple-value-holder>
+      <app-simple-value-holder label="Luchtvochtigheid %" [value]="(globalMeasurement.humidity).toString()"></app-simple-value-holder>
     </div>
     <div class="col">
-      <app-simple-value-holder label="Temperatuur °C" [value]="value"></app-simple-value-holder>
+      <app-simple-value-holder *ngIf="globalMeasurement.dhtStatus === true; else passiveSmartMeter" label="Status DHT" value="Actief"></app-simple-value-holder>
     </div>
   </div>
   <div class="row row-settings">
     <div class="col">
-      <app-simple-value-holder label="Temperatuur °C" [value]="value"></app-simple-value-holder>
+      <app-simple-value-holder label="Momentale gebruik kW" [value]="(globalMeasurement.currentInstantaneousPowerUsed).toFixed(1)"></app-simple-value-holder>
     </div>
     <div class="col">
-      <app-simple-value-holder label="Temperatuur °C" [value]="value"></app-simple-value-holder>
+      <app-simple-value-holder label="Kosten €" [value]="(globalMeasurement.totalCost).toFixed(2)"></app-simple-value-holder>
     </div>
     <div class="col">
-      <app-simple-value-holder label="Temperatuur °C" [value]="value"></app-simple-value-holder>
+      <app-simple-value-holder *ngIf="globalMeasurement.smartMeterStatus === true; else passiveSmartMeter" label="Status slimme meter" value="Actief"></app-simple-value-holder>
     </div>
   </div>
 </div>
+
+<ng-template #passiveSmartMeter>
+  <app-simple-value-holder label="Status slimme meter" value="Passief"></app-simple-value-holder>
+</ng-template>
+
+<ng-template #passiveDht>
+  <app-simple-value-holder label="Status DHT" value="Passief"></app-simple-value-holder>
+</ng-template>
