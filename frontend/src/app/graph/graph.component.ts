@@ -26,7 +26,14 @@ lineChartData: ChartDataSets[] = [
       point: {
           radius: 0
       }
-  }
+    },
+    scales: {
+      xAxes: [{
+          ticks: {
+              display: false //this will remove only the label
+          }
+      }]
+    }
   };
 
   lineChartColors: Color[] = [
