@@ -1,7 +1,7 @@
 <nav class="navbar navbar-dark bg-dark">
   <a class="navbar-brand">
     <div class="font-light" style="padding-left: 1vw; font-size: 1.5vw;">Internet of Things dashboard</div>
-    <div class="timestamp-container"><div class="header-timestamp font-light" style="padding-left: 1vw; font-size: 0.8vw;">Laats bijgewerkt:  {{globalMeasurement.timestamp.time.hour}}:{{globalMeasurement.timestamp.time.minute}} {{globalMeasurement.timestamp.date.day}}/{{globalMeasurement.timestamp.date.month}}/{{globalMeasurement.timestamp.date.year}}</div></div>
+    <div class="timestamp-container"><div class="header-timestamp font-light" style="padding-left: 1vw; font-size: 0.8vw;">Laats bijgewerkt:  {{pad(globalMeasurement.timestamp.time.hour, 2)}}:{{pad(globalMeasurement.timestamp.time.minute, 2)}} {{pad(globalMeasurement.timestamp.date.day, 2)}}-{{pad(globalMeasurement.timestamp.date.month, 2)}}-{{globalMeasurement.timestamp.date.year}}</div></div>
     
   </a>
 </nav>
@@ -30,7 +30,7 @@
     </div>
   </div>
   <div class="row row-settings">
-    <app-graph [values]="(globalMeasurement.powerOverHours)" label="Amount test over hour"></app-graph>
+    <app-graph [values]="(globalMeasurement.powerOverHours)" label="gebruik laatste uren"></app-graph>
   </div>
 </div>
 

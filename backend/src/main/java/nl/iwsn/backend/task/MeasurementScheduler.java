@@ -18,7 +18,7 @@ public class MeasurementScheduler {
         this.webSocketService = webSocketService;
     }
 
-    @Scheduled(cron = "0/15 * * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void generateGlobalMeasurement() {
         this.webSocketService.send(this.measurementService.getSerializedMeasurement(24));
     }

@@ -37,7 +37,8 @@ public class MeasurementService {
     }
 
     public String getSerializedMeasurement(int hours) {
-        return this.gson.toJson(this.createMeasurement(hours));
+        GlobalMeasurement measurement = this.createMeasurement(hours);
+        return this.gson.toJson(measurement);
     }
 
     public double calculateHumidityTrend() {
@@ -62,7 +63,7 @@ public class MeasurementService {
         if (dhtData.size() == 0) {
             return 0.0;
         }
-        
+
         return ((double)dhtData.get(0).getTemperature() - dhtData.get(dhtData.size() - 1).getTemperature()) / (0 - (double)dhtData.indexOf(dhtData.get(dhtData.size() - 1)));
     }
 
