@@ -11,3 +11,9 @@ services:
       - 9865:9865
     depends_on:
       - database
+  frontend:
+    build: ./frontend
+    ports:
+      - 7894:80
+    depends_on:
+      - backend

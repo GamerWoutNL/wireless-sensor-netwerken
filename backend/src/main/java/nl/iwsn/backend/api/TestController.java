@@ -1,10 +1,10 @@
 package nl.iwsn.backend.api;
 
 import nl.iwsn.backend.model.dht.DhtData;
-import nl.iwsn.backend.model.smartmeter.Measurement;
 import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 import nl.iwsn.backend.services.DatabaseService;
 import nl.iwsn.backend.services.MeasurementService;
+import nl.iwsn.backend.services.WebSocketService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +15,12 @@ public class TestController {
 
     private final DatabaseService databaseService;
     private final MeasurementService measurementService;
+    private final WebSocketService webSocketService;
 
-    public TestController(DatabaseService databaseService, MeasurementService measurementService) {
+    public TestController(DatabaseService databaseService, MeasurementService measurementService, WebSocketService webSocketService) {
         this.databaseService = databaseService;
         this.measurementService = measurementService;
+        this.webSocketService = webSocketService;
     }
 
     @GetMapping("dht")
@@ -75,4 +77,10 @@ public class TestController {
     public double getTemperatureTrend() {
         return this.measurementService.calculateTemperatureTrend();
     }
+
+    @GetMapping("data")
+    public void getData() {
+        this.webSocketService.send(this.measurementService.getSerializedMeasurement(24));
+    }
+
 }
