@@ -1,7 +1,5 @@
 package nl.iwsn.backend.api;
 
-import com.google.gson.Gson;
-import nl.iwsn.backend.model.GlobalMeasurement;
 import nl.iwsn.backend.model.dht.DhtData;
 import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 import nl.iwsn.backend.services.DatabaseService;
@@ -18,13 +16,11 @@ public class TestController {
     private final DatabaseService databaseService;
     private final MeasurementService measurementService;
     private final WebSocketService webSocketService;
-    private final Gson gson;
 
     public TestController(DatabaseService databaseService, MeasurementService measurementService, WebSocketService webSocketService) {
         this.databaseService = databaseService;
         this.measurementService = measurementService;
         this.webSocketService = webSocketService;
-        this.gson = new Gson();
     }
 
     @GetMapping("dht")
@@ -84,8 +80,7 @@ public class TestController {
 
     @GetMapping("data")
     public void getData() {
-        GlobalMeasurement measurement = this.measurementService.createMeasurement(24);
-        this.webSocketService.send(this.gson.toJson(measurement));
+        this.webSocketService.send(this.measurementService.getSerializedMeasurement(24));
     }
 
 }
