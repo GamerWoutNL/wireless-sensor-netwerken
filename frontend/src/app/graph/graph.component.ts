@@ -14,7 +14,7 @@ export class GraphComponent implements OnInit {
 
   labels: string[] = [];
 
-lineChartData: ChartDataSets[] = [
+  lineChartData: ChartDataSets[] = [
     { data: this.values, label: this.label },
   ];
 
@@ -30,16 +30,22 @@ lineChartData: ChartDataSets[] = [
     scales: {
       xAxes: [{
           ticks: {
-              display: false //this will remove only the label
+              display: false
           }
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Gebruik (kW)'
+        }
       }]
     }
   };
 
   lineChartColors: Color[] = [
     {
-      borderColor: 'rgba(121,82,179,1)',
-      backgroundColor: 'rgba(121,82,179,0.28)',
+      borderColor: 'rgba(121, 82, 179, 1)',
+      backgroundColor: 'rgba(121, 82, 179, 0.28)',
     },
   ];
 
