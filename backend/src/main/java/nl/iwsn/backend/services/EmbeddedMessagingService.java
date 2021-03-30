@@ -1,26 +1,35 @@
 package nl.iwsn.backend.services;
 
 import org.eclipse.paho.client.mqttv3.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class EmbeddedMessagingService implements MqttCallbackExtended {
 
-    private static final String host = "tcp://test.mosquitto.org:1883";
-    private static final String topic = "smartmeter-wout";
+    @Value("${mqtt.host}")
+    private String host;
+
+    @Value("${mqtt.topic}")
+    private String topic;
 
     private IMqttClient client;
     private final MessageHandlerService messageHandler;
 
     public EmbeddedMessagingService (MessageHandlerService messageHandler) {
         this.messageHandler = messageHandler;
+    }
 
+    @PostConstruct
+    public void connect() {
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
 
         try {
-            this.client = new MqttClient(host, "client-1");
+            this.client = new MqttClient(this.host, "client-1");
             this.client.setCallback(this);
             this.client.connect(options);
         } catch (MqttException e) {
@@ -38,7 +47,7 @@ public class EmbeddedMessagingService implements MqttCallbackExtended {
         message.setRetained(false);
 
         try {
-            this.client.publish(topic, message);
+            this.client.publish(this.topic, message);
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -47,7 +56,7 @@ public class EmbeddedMessagingService implements MqttCallbackExtended {
     @Override
     public void connectComplete(boolean b, String s) {
         try {
-            this.client.subscribe(topic, 0);
+            this.client.subscribe(this.topic, 0);
         } catch (MqttException e) {
             e.printStackTrace();
         }

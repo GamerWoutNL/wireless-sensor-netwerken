@@ -1,12 +1,18 @@
 package nl.iwsn.backend.services;
 
+import nl.iwsn.backend.model.smartmeter.Measurement;
 import nl.iwsn.backend.repositories.DhtRepository;
 import nl.iwsn.backend.repositories.SmartMeterRepository;
 import nl.iwsn.backend.model.dht.DhtData;
 import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DatabaseService {
@@ -38,4 +44,46 @@ public class DatabaseService {
     public List<SmartMeterData> getAllSmartMeterData() {
         return this.smartMeterRepository.findAll();
     }
+
+    public double getCurrentPower() {
+        return getAllSmartMeterData().get(getAllSmartMeterData().size() -1).getMeasurement().getInstantaneousPowerUsed();
+    }
+
+    public List<Double> getPowerLastXHours(int hours) {
+        return smartMeterRepository.findPacketArrivedBetween(LocalDateTime.now().minus(hours, ChronoUnit.HOURS), LocalDateTime.now())
+                .stream()
+                .map(SmartMeterData::getMeasurement)
+                .map(Measurement::getInstantaneousPowerUsed)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public double getTotalCost() {
+        List<SmartMeterData> smartMeterData = smartMeterRepository.findAll();
+        Collections.sort(smartMeterData);
+        SmartMeterData lastSmartMeterData = smartMeterData.get(smartMeterData.size() - 1);
+        // 0.22 is the average tariff in the Netherlands
+        return (lastSmartMeterData.getMeasurement().getEnergyUsedTariffOne() + lastSmartMeterData.getMeasurement().getEnergyUsedTariffTwo()) * 0.22;
+    }
+
+    public int getTemperature() {
+        DhtData data = dhtRepository.findFirstByOrderByTimestampDesc();
+        return data.getTemperature();
+    }
+
+    public int getHumidity() {
+        DhtData data = dhtRepository.findFirstByOrderByTimestampDesc();
+        return data.getHumidity();
+    }
+
+    public boolean getSmartMeterStatus() {
+        List<SmartMeterData> smartMeterData = smartMeterRepository.findAll();
+        Collections.sort(smartMeterData);
+        SmartMeterData lastSmartMeterData = smartMeterData.get(smartMeterData.size() - 1);
+        return lastSmartMeterData.getMeasurement().getTimestamp().until(LocalDateTime.now(), ChronoUnit.SECONDS) <= 60;
+    }
+
+    public boolean getDhtStatus() {
+        return dhtRepository.findFirstByOrderByTimestampDesc().getTimestamp().until(LocalDateTime.now(), ChronoUnit.SECONDS) <= 60;
+    }
+
 }

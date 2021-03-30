@@ -49,5 +49,4 @@ public class DhtData implements IData, JsonDeserializer<DhtData> {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
-
 }

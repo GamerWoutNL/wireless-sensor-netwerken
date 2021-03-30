@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "smartMeterData")
-public class SmartMeterData implements IData {
+public class SmartMeterData implements IData, Comparable<SmartMeterData> {
 
     @Id
     @JsonProperty("uid")
@@ -29,5 +29,10 @@ public class SmartMeterData implements IData {
     @SerializedName("p1")
     @JsonProperty("measurement")
     private Measurement measurement;
+
+    @Override
+    public int compareTo(SmartMeterData o) {
+        return measurement.getTimestamp().compareTo(o.getMeasurement().getTimestamp());
+    }
 
 }

@@ -3,9 +3,9 @@ package nl.iwsn.backend.api;
 import nl.iwsn.backend.model.dht.DhtData;
 import nl.iwsn.backend.model.smartmeter.SmartMeterData;
 import nl.iwsn.backend.services.DatabaseService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import nl.iwsn.backend.services.MeasurementService;
+import nl.iwsn.backend.services.WebSocketService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,9 +14,13 @@ import java.util.List;
 public class TestController {
 
     private final DatabaseService databaseService;
+    private final MeasurementService measurementService;
+    private final WebSocketService webSocketService;
 
-    public TestController(DatabaseService databaseService) {
+    public TestController(DatabaseService databaseService, MeasurementService measurementService, WebSocketService webSocketService) {
         this.databaseService = databaseService;
+        this.measurementService = measurementService;
+        this.webSocketService = webSocketService;
     }
 
     @GetMapping("dht")
@@ -27,6 +31,56 @@ public class TestController {
     @GetMapping("smartmeter")
     public List<SmartMeterData> getAllSmartMeterData() {
         return this.databaseService.getAllSmartMeterData();
+    }
+
+    @GetMapping("currentpower")
+    public Double getWoutPower() {
+        return this.databaseService.getCurrentPower();
+    }
+
+    @GetMapping("getlasthours/{hours}")
+    public List<Double> getLastHours(@PathVariable int hours) {
+        return this.databaseService.getPowerLastXHours(hours);
+    }
+
+    @GetMapping("total-cost")
+    public double getTotalCosts() {
+        return this.databaseService.getTotalCost();
+    }
+
+    @GetMapping("temperature")
+    public int getTemperature() {
+        return this.databaseService.getTemperature();
+    }
+
+    @GetMapping("humidity")
+    public int getHumidity() {
+        return this.databaseService.getHumidity();
+    }
+
+    @GetMapping("dht-status")
+    public boolean getDhtStatus() {
+        return this.databaseService.getDhtStatus();
+    }
+
+    @GetMapping("smart-meter-status")
+    public boolean getSmartMeterStatus() {
+        return this.databaseService.getSmartMeterStatus();
+    }
+
+    @GetMapping("humidity-trend")
+    public double getHumidityTrend() {
+        return this.measurementService.calculateHumidityTrend();
+    }
+
+    @GetMapping("temperature-trend")
+    public double getTemperatureTrend() {
+        return this.measurementService.calculateTemperatureTrend();
+    }
+
+    @GetMapping("data")
+    public void getData() {
+        this.webSocketService.send(this.measurementService.getSerializedMeasurement(24));
     }
 
 }
