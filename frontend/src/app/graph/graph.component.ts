@@ -36,7 +36,7 @@ export class GraphComponent implements OnInit {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Usage (kW)'
+          labelString: 'Gebruik (kW)'
         }
       }]
     }
